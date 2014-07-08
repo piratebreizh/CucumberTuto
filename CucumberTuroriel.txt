@@ -33,19 +33,57 @@
     </step>
     <!--Clement : Partie 1  Why Cucumber?-->
 	<step name="Chapitre partie 1 - Why Cucumber?">
-		<substep><text><![CDATA[
-		Pour linux l'installation de Maven est relativement simple car un packet est présent sur les dépôts de la majorité des distributions.
-		Cliquez sur le lien suivant : <a href="apt://maven">Maven via APT</a>
-		]]>
-		</text></substep>
-		<substep><text><![CDATA[
-		Si le lien ci-dessus ne fonctionne pas vous pouvez ouvrir un terminal et saisir : "apt-get install maven"
-		]]></text></substep>
-		<substep><text><![CDATA[
-		Maintenant que vous avez installé Maven, vous pouvez dès à présent vérifier qu'il est fonctionnel en tappant dans un terminal : "mvn --version".
-		Les lignes suivantes s'afficheront.
-		]]></text></substep>
-    </step>
+	<substep>
+		<text>
+			<b><![CDATA[1.0 Cucumber : Kesako ?]]></b></br>
+			<![CDATA[
+			Un soft part toujours d’une idée, une idée qui doit être expliquée par le maitre d’ouvrage et comprise par une équipe de développement. Le monde du logiciel, aujourd’hui, souffre d’une mauvaise communication entre ces deux parties, entrainant un 				écart entre le concept de base et l’application développée. </br> 			Nous avons donc besoin de filtres pour protéger le concept de l’application : c’est le premier rôle de Cucumber.</br>
+			]]>
+		</text>
+	</substep>
+	<substep>
+		<text>
+			<b><![CDATA[1.1 Tests d’acceptance]]></b></br>
+			<![CDATA[
+			Plutôt que d’exposer ses exigences à l’équipe de développement, méthode qui ne favorise pas le feedback au cours du projet, les parties prenantes et les développeurs collaborent pour écrire ensemble une batterie de tests qui répondent aux besoins 				précis du maitre d’ouvrage. Cela permet donc de se centrer sur ce qui est le plus important pour lui, ce qui doit être fait. On appelle ces tests « acceptance tests » car ils expriment ce que le soft a besoin de faire, dans l’ordre, pour être 				qualifié d’ « acceptable ».</br>
+			Il faut bien faire la différence entre ces « acceptance tests » et les tests unitaires : ces derniers sont là pour aider le développeur à vérifier et valider leur application tandis que nos tests d’acceptance sont là pour diriger le projet. On dit 			que les tests unitaires servent à « build the thing right » (faire les choses bien) tandis que les « acceptances tests » servent à « build the right thing » (faire les bonnes choses).</br>
+			]]>
+		</text>
+	</substep>
+	<substep>
+		<text>
+			<b><![CDATA[1.2 BDD et Ubiquitous language]></b></br>
+			<![CDATA[
+			Le Behaviour Driven Development (BDD) dérive du TDD (Test Driven Development) en gardant les bonnes habitudes du développer TDD. Le but étant de créer des tests qui reflètent les attentes du maitre d’ouvrage, lisibles par n’importe qui. C’est alors 			qu’entre en jeu l’ « Ubiquitous language » (langage omniprésent).</br>
+			Ce langage omniprésent part d’une idée : un projet trop souffre souvent d’un manque de  communication entre les experts et le développement. Ceci est principalement dut à la barrière du langage : les experts expriment vaguement ce qu’ils veulent, 				dans leur jargon, et les développeurs, essayant souvent de comprendre le domaine pour lequel ils doivent développer, comprennent vaguement ce qu’ils doivent faire.</br>
+			Avec Cucumber, l’ « Ubiquitous language » peut être compris par n’importe qui impliqué dans le projet, quel que soit son domaine. Quand vous l’utilisez dans vos conversations, vos documentations et votre code, la barrière du langage n’est plus et 				les risques d’incompréhension sont considérablement réduits.</br>
+			Les tests Cucumber interagissent directement avec le code produit, mais sont écrit dans un langage intermédiaire, que le maitre d’ouvrage peut comprendre. Cette collaboration permet de mettre le doigt sur les incompréhensions de l’équipe de 				développement bien avant qu’elles ne viennent polluer le code.
+			]]>
+		</text>
+	</substep>
+	<substep>
+		<text>
+			<b><![CDATA[1.3 Exemple du langage utilisé par Cucumber]></b></br>
+			<![CDATA[
+			Vous remarquerez à quel point ce langage décrit facilement ce que nous attendons du système. Cela permet donc, pour toutes les entités du projet, de visualiser le système avant qu’il ne soit construit. Ces tests d’acceptance deviennent alors des 				spécifications exécutables.</br>
+			Les tests Cucumbers peuvent être écrits en 40 langages parlés différents. Vous pouvez également grouper vos scénarios en utilisant les tags.</br>
+			Ces tests servent ainsi de documentation. Plutôt que d’écrire une doc qui devra être mise à jour continuellement dans le futur, ces tests d’acceptances deviennent une documentation vivante qui reflète réellement l’état du projet.</br>
+			Les tests façon Cucumber permettent alors d’éviter de faire évoluer en même temps les documents, les tests et le code d’un projet classique. Les tests représentent alors une idée commune du projet, renforçant un esprit de confiance au sein de 				l’équipe, car personne n’a sa propre compréhension du soft.
+			]]>
+		</text>
+	</substep>
+	<substep>
+		<text>
+			<b><![CDATA[1.4 Fonctionnement]]></b></br>
+			<![CDATA[
+			Cucumber est un outil en ligne de commandes. Quand vous le lancez, il va lire dans vos spécifications chaque features qui contiennent les scénarios à tester. Chaque scénario contient une liste d’étapes à suivre. Donc, pour que Cucumber puisse 				comprendre vos scénarios, il  faut respecter un certain nombre de règles syntaxiques. L’ensemble de ces règles est appelées Gherkin, nous en parlerons dans le second chapitre.</br>
+			Cucumber transforme le code « humain » (Ubiquitous language) en Ruby pour exécuter les tests dans votre système.</br>
+			Si le test se termine sans erreur, Cucumber se rend à l’étape suivante du scénario. Si un scénario se termine avec une erreur, il l’affiche en précisant ce qui n’a pas marché et passe ensuite au scénario suivant.</br> 			Un test peux générer seulement deux ou trois lignes de code Ruby qui seront ensuite délégués à une librairie de support, selon le domaine de votre application.</br>
+			]]>
+		</text>
+	</substep>
+	
+    	</step>
 	<!-- Yohan : Partie 2 First Taste-->
     <step name="Partie 2 - First Taste">
 		<substep><text>
