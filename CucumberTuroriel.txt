@@ -1,69 +1,149 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <tutorial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://leanforge.dev/tutorial https://github.com/HugoPoi/LeanForge/raw/master/xsd/tutotialschema.xsd">
-  <meta>
-    <software id="maven">
-      <name><![CDATA[Maven]]></name>
-      <website href="http://maven.apache.org"><![CDATA[Apache Maven]]></website>
-    </software>
-    <languages>
-      <codinglang>java</codinglang>
-    </languages>
-    <plateforms>linux-ubuntu</plateforms>
-    <categories>
-      <category>build</category>
-    </categories>
-    <keywords><![CDATA[java,installation,maven,linux]]></keywords>
-  </meta>
-  <content lang="en-US">
-    <title><![CDATA[Tutorial Name]]></title>
-    <step name="First Step">
-      <substep><![CDATA[
-My first text line. <a class="btn btn-default" href="http://download.software.com/">Download</a>
-]]></substep>
-      <substep><![CDATA[
-Unzip the downloaded file.
-]]></substep>
-      <substep><![CDATA[
-Launch executable file "sample.exe"
-]]></substep>
+<meta>
+	<software id="cucumber">
+		<name><![CDATA[Cucumber]]></name>
+		<website href="http://cukes.info/"><![CDATA[Cucumber]]></website>
+	</software>
+		<languages>
+			<codinglang>ruby</codinglang>
+		</languages>
+	<plateforms>windows</plateforms>
+	<categories>
+		<category>testing</category>
+	</categories>
+	<keywords><![CDATA[cucuber,tutoriel,installation,windows]]></keywords>
+</meta>
+<content lang="fr-FR">
+    <title><![CDATA[Maîtriser Cucumber]]></title>
+	<!--Installation de Cucumber  A DEFINIR -->
+	<step name="Installation de Cucumber">
+		<substep><text><![CDATA[
+		Pour linux l'installation de Maven est relativement simple car un packet est présent sur les dépôts de la majorité des distributions.
+		Cliquez sur le lien suivant : <a href="apt://maven">Maven via APT</a>
+		]]>
+		</text></substep>
+		<substep><text><![CDATA[
+		Si le lien ci-dessus ne fonctionne pas vous pouvez ouvrir un terminal et saisir : "apt-get install maven"
+		]]></text></substep>
+		<substep><text><![CDATA[
+		Maintenant que vous avez installé Maven, vous pouvez dès à présent vérifier qu'il est fonctionnel en tappant dans un terminal : "mvn --version".
+		Les lignes suivantes s'afficheront.
+		]]></text></substep>
     </step>
-    <step name="Second Step">
-      <substep><![CDATA[
-Go to the configuration menu
-]]></substep>
-      <substep><![CDATA[
-Configure this settings : .
-]]></substep>
-      <substep><![CDATA[
-Then click on start button.
-]]></substep>
+    <!--Clement : Partie 1  Why Cucumber?-->
+	<step name="Chapitre partie 1 - Why Cucumber?">
+		<substep><text><![CDATA[
+		Pour linux l'installation de Maven est relativement simple car un packet est présent sur les dépôts de la majorité des distributions.
+		Cliquez sur le lien suivant : <a href="apt://maven">Maven via APT</a>
+		]]>
+		</text></substep>
+		<substep><text><![CDATA[
+		Si le lien ci-dessus ne fonctionne pas vous pouvez ouvrir un terminal et saisir : "apt-get install maven"
+		]]></text></substep>
+		<substep><text><![CDATA[
+		Maintenant que vous avez installé Maven, vous pouvez dès à présent vérifier qu'il est fonctionnel en tappant dans un terminal : "mvn --version".
+		Les lignes suivantes s'afficheront.
+		]]></text></substep>
     </step>
-  </content>
-  <content lang="fr-FR">
-    <title><![CDATA[Installation de Maven]]></title>
-    <step name="First Step">
-      <substep><![CDATA[
-Pour linux l'installation de Maven est relativement simple car un packet est présent sur les dépôts de la majorité des distributions.
-Cliquez sur le lien suivant : <a href="apt://maven">Maven via APT</a>
-]]></substep>
-      <substep><![CDATA[
-Si le lien ci-dessus ne fonctionne pas vous pouvez ouvrir un terminal et saisir : "apt-get install maven"
-]]></substep>
-      <substep><![CDATA[
-Maintenant que vous avez installé Maven, vous pouvez dès à présent vérifier qu'il est fonctionnel en tappant dans un terminal : "mvn --version".
-Les lignes suivantes s'afficheront.
-]]></substep>
+	<!-- Yohan : Partie 2 First Taste-->
+    <step name="Partie 2 - First Taste">
+		<substep><text>
+			<![CDATA[
+			Go to the configuration menu
+			]]>
+		</text></substep>
+		<substep><text>
+			<![CDATA[
+			Configure this settings : .
+			]]>
+		</text></substep>
+		<substep><text>
+			<![CDATA[
+			Then click on start button.
+			]]>
+		</text></substep>
     </step>
-    <step name="Second Step">
-      <substep><![CDATA[
-Go to the configuration menu
-]]></substep>
-      <substep><![CDATA[
-Configure this settings : .
-]]></substep>
-      <substep><![CDATA[
-Then click on start button.
-]]></substep>
+    <!-- Alex : Chapitre I partie  partie 3 Gherkin Basics-->
+	<step name="Partie 3 - Gherkin Basics">
+		<substep>
+			<text>
+			<![CDATA[Maintenant que vous avez acquis une certaine confiance dans la façon dont fonctionne Cucember. Nous allons regarder Gherkin, 
+			le langage que nous utilisons pour écrire les fonctionnalités de Cucumber. À la fin de ce chapitre, vous allez comprendre comment écrire des 
+			spécifications pour votre logiciel qui peut être à la fois lu par vos intervenants et testé par
+			Cucumber. Vous apprendrez ce que chacun des mots clés de Gherkin fait et comment
+			ils s'inscrivent tous ensemble pour être lisibles, comme des spécifications exécutables de Cucumber. Vous ne saurez pas
+			encore comment faire fonctionner les tests, mais vous serez prêt à les écrire.]]>
+			</text>
+		</substep>
+		<substep>
+			<text>
+			<b><![CDATA[3.1 Qu'est-ce Gherkin ?]]></b></br>
+			<![CDATA[
+			Nous construisons des logiciels pour les personnes (appelons-les parties prenantes), il est notoirement difficile de savoir exactement ce qu'ils veulent que nous construisons. Dans son célèbre essai, ‘pas de solution miracle, Fred Brooks’ dit: "La partie la plus difficile pour construire un système logiciel est de décider précisément ce qu'il faut construire".
+			Nous avons tous travaillés sur des projets où, en raison d'un malentendu, le code
+			sur lequel nous avions travaillé dur pendant plusieurs jours à dû être jeté.
+			Une meilleure communication entre les développeurs et les parties prenantes est essentielle pour aider à éviter ce genre de perte de temps. Une technique qui aide réellement à faciliter 
+			cette communication est l'utilisation d'exemples concrets pour illustrer ce que nous voulons
+			que le logiciel fasse.
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<text>
+			<b><![CDATA[3.1 Qu'est-ce Gherkin ?]]></b></br>
+			<![CDATA[
+			Nous construisons des logiciels pour les personnes (appelons-les parties prenantes), il est notoirement difficile de savoir exactement ce qu'ils veulent que nous construisons. Dans son célèbre essai, ‘pas de solution miracle, Fred Brooks’ dit: "La partie la plus difficile pour construire un système logiciel est de décider précisément ce qu'il faut construire".
+			Nous avons tous travaillés sur des projets où, en raison d'un malentendu, le code
+			sur lequel nous avions travaillé dur pendant plusieurs jours à dû être jeté.
+			Une meilleure communication entre les développeurs et les parties prenantes est essentielle pour aider à éviter ce genre de perte de temps. Une technique qui aide réellement à faciliter 
+			cette communication est l'utilisation d'exemples concrets pour illustrer ce que nous voulons
+			que le logiciel fasse.
+			]]>
+			</br>
+			<b><![CDATA[Exemples concrets : ]]></b>
+			</br>
+			<![CDATA[
+			Nous voulons construire le comportement désiré du système en utilisant des exemples du monde réel, nous restons les pieds sur terre dans le langage et la terminologie qu’utilise nos partenaires: nous parlons leur langue. Quand nous parlons des termes utilisés dans les exemples, ils doivent vraiment s'imaginer utiliser le système.
+			Discuter : signifie qu'ils peuvent commencer à nous donner des commentaires et suggestions utiles, avant qu’une seule ligne de code ne soit écrite.
+			Pour illustrer cela, imaginons que vous deviez vous charger de la construction d'un système de paiement par carte de crédit.
+			L'une des exigences est de s'assurer que les utilisateurs ne peuvent pas entrer des données erronées.
+			]]>
+			</br>
+			<![CDATA[Voici une façon d'exprimer ce qui suit:]]>
+			</br>
+			<center><i><![CDATA[Les clients devraient être empêchés d'entrer des informations invalides de leur carte de crédit.]]></i></center>
+			</br>
+			
+			
+			
+			
+			
+			</text>
+		</substep>
+		<substep><text>
+			<![CDATA[
+			Then click on start button.
+			]]>
+		</text></substep>
+    </step>
+	<!-- Adil : Chapitre I partie 4 Step Definitions: From the Outside-->
+    <step name="Partie 4 - Step Definitions: From the Outside">
+		<substep><text>
+			<![CDATA[
+			Go to the configuration menu
+			]]>
+		</text></substep>
+		<substep><text>
+			<![CDATA[
+			Configure this settings : .
+			]]>
+		</text></substep>
+		<substep><text>
+			<![CDATA[
+			Then click on start button.
+			]]>
+		</text></substep>
     </step>
   </content>
 </tutorial>
