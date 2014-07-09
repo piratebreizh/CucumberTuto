@@ -214,7 +214,24 @@
 			</br>
 			<b><![CDATA[3.2 Format et syntaxe]]></b>
 			</br>
-
+			<![CDATA[
+			Gherkin utilisent une extension de fichier simple. Ils sont enregistrés en tant que texte brut, ce qui signifie qu'ils peuvent être lus et modifiés avec des outils basique. 
+			Un fichier Gherkin est donné par sa structure et sa signification en utilisant un ensemble de mots-clés spécifiques.
+			Il existe un ensemble équivalent de ces mots clés dans chacun des supportée
+			langues parlées, mais pour l'instant, nous allons jeter un oeil à ceux français:
+			• Fonction
+			• Contexte
+			• Scenario
+			• Compte tenu de
+			• When
+			• Ensuite
+			• Et
+			• Mais
+			• Exemples
+			Nous passerons le reste de ce chapitre à explorer comment utiliser les plus communs
+			de ces mots-clés, ce qui sera suffisant pour vous aider à commencer à écrire votre propre
+			]]>
+			
 			</text>
 		</substep>
 		<substep><text>
