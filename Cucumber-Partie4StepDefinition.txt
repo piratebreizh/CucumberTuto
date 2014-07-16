@@ -1,0 +1,332 @@
+Step Definition:
+
+Dans cette partie nous allons étudier quelques concepts avancés de cucumber. Nous étudierons cela à travers un exemple. A partir de là les limites de développement  et des tests ce chevaucheront.
+
+Nous allons travailler sur le scénario suivant, qui se trouve à /features/cash_withdrawal.feature:
+	Feature: cash Withdrawal
+		Scenario: Successful withdawal from an account in credit
+			Given I have deposited $100 in an account
+			When I request $20
+			Then $20 should be dispensed
+
+
+7.1 Schématisons le domain model
+	Nous allons laisser cucumber piloter notre travail pour la création de classes domain model directement dans le scénario. On lance la commande cucumber et on place le code qu'in obtient dans un fichier ./features/step_definitions/steps.rb:
+		Given(/^I have deposited \$(\d+) in an account$/) do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+
+		When(/^I request \$(\d+)$/) do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+
+		Then(/^\$(\d+) should be dispensed$/) do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+	
+	On relance la commande cucumber et il nous affiche:
+	
+	  Scenario: Successful withdawal from an account in credit # features\test.feature:2
+		Given I have deposited $100 in an account              # features/step_definitions/test_steps.rb:1
+		  TODO (Cucumber::Pending)
+		  ./features/step_definitions/test_steps.rb:2:in `/^I have deposited \$(\d+) in an account$/'
+		  features\test.feature:3:in `Given I have deposited $100 in an account'
+		When I request $20                                     # features/step_definitions/test_steps.rb:5
+		Then $20 should be dispensed                           # features/step_definitions/test_steps.rb:9
+
+	1 scenario (1 pending)
+	3 steps (2 skipped, 1 pending)
+	0m0.031s
+	
+	On va mettre des expressions régulières pour chaque step definition:
+		Given /^I have deposited \$(\d+) in my account $/ do |amount|
+			Account.new(amount.to_i)
+		end
+		When /^I request \$(\d+) $/ do |arg1|
+			pending #express the regexp above with the code you wish you had
+		end
+		Then /^\$(\d+) should be dispensed$/ do |arg1|
+			pending #express the regexp above with the code you wish you had
+		end
+
+	Dans le premier step definition on fait appel a une classe imaginaire appelée Account. Ruby nous donne une erreur en nous indiquant qu'il faut créer la classe Account. Alors, c'est ce que nous allons faire:
+
+	class Account
+		def initialize(amount)
+		end
+	end
+	
+	On relance la commande cucumber, et le message suivant s'affiche:
+		Feature: Cash Withdrawal
+			Scenario:Successful withdrawal from an account in credit
+			Given I have deposited $100 in my account
+			When I request $20
+				TODO (Cucumber::Pending)
+				./features/step_definitions/steps.rb:13
+				features/cash_withdrawal.feature:4
+			Then $20 should be dispensed
+		1 scenario (1 pending)
+		3 steps (1 skipped, 1 pending, 1 passed)
+		0m0.002s
+	
+	Comme nous n'avons mis dans les conditions que si on a $100 alors qu'on a encore rien déposé. alors on fait deux changements:
+	
+		Given /^I have deposited \$(\d+) in my account $/ do |amount|
+			my_account = Account.new
+			my_account.deposit(amount.to_i)
+		end
+		
+		class Account
+			def deposit(amount)
+			end
+		end
+		
+	On peut aussi vérifier si la somme que nous avons déposée correspond bien a la somme attendue:
+		
+		Given /^I have deposited \$(\d+) in my account $/ do |amount|
+			my_account = Account.new
+			my_account.deposit(amount.to_i)
+			my_account.balance.should eq(amount.to_i),
+				"Expected the balance to be#{amount} but it was #{my_account.balance}"
+		end
+		
+	Pour rendre le step definition plus pertinent, on ajoute la méthode dans la classe Account:
+		def	balance
+		end
+	
+	Cette fois ci le message suivant s'affiche quand on lance la commande cucumber:
+		Feature: Cash Withdrawal
+			Scenario: Successful withdrawal from an account in credit
+				Given I have deposited $100 in my account
+				Expected the balance to be 100 but it was
+				(RSpec::Expectations::ExpectationNotMetError)
+				./features/step_definitions/steps.rb:15
+				features/cash_withdrawal.feature:3
+			When I request $20
+			Then $20 should be dispensed
+		Failing Scenarios:
+		cucumber features/cash_withdrawal.feature:2
+		1 scenario (1 failed)
+		3 steps (1 failed, 2 skipped)
+		0m0.002s
+		
+	Nous allons désormais faire passer le premier test en modifiant la class Account:
+	class Account
+		def deposit(amount)
+			@balance = amount
+		end
+		def balance
+			@balance
+		end
+	end
+		
+		
+7.2 Suppression des doublons
+	Dans step.rb, on ajoute:	
+		Transform /^\d+$/ do |number|
+		  number.to_i
+		end
+	
+	Le Transform a pour le but de transformer le string en quelque chose qu'on utilise dans le code. Ici, on transforme un nombre en Fixnum integer de Ruby. Pour chaque step definition, cucumber va chercher les Transform qui correspondent à chaque argument et lui passe le string pour passer au step definition le résultat obtenu à partir de ce Tranform : 
+				***Figure 6, Transforms: how do they work?, on page 119***
+	
+	Mais cela crée une duplication en soit même avec la présence de \d+ dans step definition et le Transform. alors on crée une constante qu'on utilisera  dans le step definition:
+	
+		CAPTURE_A_NUMBER = Transform /^\d+$/ do |number|
+		  number.to_i
+		end
+
+		Given /^I have deposited \$(#{CAPTURE_A_NUMBER}) in my account$/ do |amount|
+		  my_account = Account.new
+		  my_account.deposit(amount)
+		  my_account.balance.should eq(amount), 
+			"Expected the balance to be #{amount} but it was #{my_account.balance}"
+		end
+	
+	On déplace maintenant le $ dans le bloc transform pour réunir l'ensemble de l'expression régulière:
+		CAPTURE_CASH_AMOUNT = Transform /^\$(\d+)$/ do |digits|
+		  digits.to_i
+		end
+
+		Given /^I have deposited (#{CAPTURE_CASH_AMOUNT}) in my account$/ do |amount|
+		  my_account = Account.new
+		  my_account.deposit(amount)
+		  my_account.balance.should eq(amount), 
+			"Expected the balance to be #{amount} but it was #{my_account.balance}"
+		end
+	
+7.3 Ajout des méthodes 
+	Si on relance cucumber, il nous dit où on se trouve par:
+		Feature : Cash Withdrawal
+			Scenario : Successful withdrawal from an account in credit
+				Given I have deposited $100 in my account
+				When I request $20
+					TODO (Cucumber::Pending)
+					./features/step_definitions/steps.rb:28
+					features/cash_withdrawal.feature:4
+				Then $20 should be dispensed
+		1 scenario (1 pending)
+		3 steps (1 skipped, 1 pending, 1 passed)
+		0m0.002s
+	
+	Comme le premier step definition a passé, on s'occupe du deuxième:
+		When /^I request \$(\d+)$/ do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+	
+	On réutilise le bloc transform ici donc on obtient:
+		When /^I request (#{CAPTURE_CASH_AMOUNT})$/ do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+	
+	On introduit une autre classe teller, qui prendra en main la demande de retrait d'argent faite par Account:
+		When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|
+		  teller = Teller.new
+		  teller.withdraw_from(my_account, amount)
+		end
+		
+	Alors, on crée la class teller:
+		class Teller
+		  def withdraw_from(account, amount)
+		  end
+		end
+
+	et en même temps on change le feature aussi:
+		Feature: Cash Withdrawal
+		  Scenario: Successful withdrawal from an account in credit
+			Given I have deposited $100 in my account
+			When I withdraw $20
+			Then $20 should be dispensed
+	
+	On relance la commande cucumber:
+		Feature : Cash Withdrawal
+			Scenario : Successful withdrawal from an account in credit
+				Given I have deposited $100 in my account
+				When I withdraw $20
+					undefined local variable or method ‘my_account’ for
+					#<Object:0x63756b65>(NameError)
+					./features/step_definitions/steps.rb:32
+					features/cash_withdrawal.feature:4
+				Then $20 should be dispensed
+		Failing Scenarios:
+		cucumberfeatures/cash_withdrawal.feature:2
+		1 scenario (1 failed)
+		3 steps (1 failed, 1 skipped, 1 passed)
+		0m0.003s
+	
+	Cucumber n'arrive pas a utiliser my_account dans le deuxième step definition car il est instancié dans le premier step definition. Donc on utilise ||, qui assure la création unique de Account. On l'utilise dans le module KnowsMyAccount:
+		module KnowsMyAccount
+		  def my_account
+			@my_account ||= Account.new
+		  end
+		end
+
+		World(KnowsMyAccount)
+	
+	On peut ainsi supprimer l'initialisation de Account dans le premier step definition:
+		Given /^I have deposited (#{CAPTURE_CASH_AMOUNT}) in my account$/ do |amount|
+		  my_account.deposit(amount)
+		  my_account.balance.should eq(amount), 
+			"Expected the balance to be #{amount} but it was #{my_account.balance}"
+		end
+
+		When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|
+		  teller = Teller.new
+		  teller.withdraw_from(my_account, amount)
+		end
+	
+	Remarque : World prend aussi en paramètre des classes:
+		class MySpecialWorld
+			def some_helper_method
+				# …
+			end
+		end
+		
+		World { MySpecialWorld.new }
+	
+	Il reste le dernier step definition:
+		Then /^\$(\d+) should be dispensed$/ do |arg1|
+		  pending # express the regexp above with the code you wish you had
+		end
+	
+	Il faut maintenant récupérerer le montant obtenu:
+		Then /^(#{CAPTURE_CASH_AMOUNT}) should be dispensed$/ do |amount|
+		  cash_slot.contents.should == amount
+		end
+	
+	Ici on vient de déclarer une classe cash_slot, on l'ajoute dans steps.rb et on l'initialise dans KnowsTheDomain:
+		module KnowsTheDomain
+		  def my_account
+			@my_account ||= Account.new
+		  end
+		  
+		  def cash_slot
+			@cash_slot ||= CashSlot.new
+		  end
+		end
+
+		class CashSlot
+		  def contents
+			raise("I'm empty!")
+		  end
+		end
+	
+	Quand on lance la commande cucumber, on obtient:
+		Feature : Cash Withdrawal
+			Scenario : Successful withdrawal from an account in credit
+			Given I have deposited $100 in my account
+			When I withdraw $20
+			Then $20 should be dispensed
+				I’m empty! (RuntimeError)
+				./features/step_definitions/steps.rb:19
+				./features/step_definitions/steps.rb:55
+				features/cash_withdrawal.feature:5
+		Failing Scenarios:
+		cucumberfeatures/cash_withdrawal.feature:2
+		1 scenario ( 1 failed)
+		3 steps ( 1 failed, 2 passed)
+		0m0.004s
+	
+	Le dernier step definition sera passé quand on demande a CashSlot de donner le montant voulu, on utilise Teller pour cela:
+		class Teller
+		  def initialize(cash_slot)
+			@cash_slot = cash_slot
+		  end
+		  
+		  def withdraw_from(account, amount)
+			@cash_slot.dispense(amount)
+		  end
+		end
+	
+	En faisant cela on peut faire passer tous les tests, mais il rest quelques changements à faire, appelle de teller dans le deuxième step definition en plus de cela la déclaration de teller dans KnowsTheDomain et la déclaration de la méthode dispense dans CashSlot:
+		When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|
+		  teller.withdraw_from(my_account, amount)
+		end
+
+		class CashSlot
+		  def contents
+			@contents or raise("I'm empty!")
+		  end
+		  
+		  def dispense(amount)
+			@contents = amount
+		  end
+		end
+		
+		module KnowsTheDomain
+		  def my_account
+			@my_account ||= Account.new
+		  end
+		  
+		  def cash_slot
+			@cash_slot ||= CashSlot.new
+		  end
+		  
+		  def teller
+			@teller ||= Teller.new(cash_slot)
+		  end
+		end
+
+		World(KnowsTheDomain)
+	
+	En lançant la commande cucumber on aperçoit que tous les tests passent.

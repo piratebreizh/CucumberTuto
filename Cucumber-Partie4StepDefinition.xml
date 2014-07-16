@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tutorial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://leanforge.dev/tutorial https://github.com/HugoPoi/LeanForge/raw/master/xsd/tutotialschema.xsd">
+<meta>
+	<software id="software">
+		<name><![CDATA[Cucumber]]></name>
+		<website href="http://cukes.info/"><![CDATA[Cucumber]]></website>
+	</software>
+		<languages>
+			<codinglang>ruby</codinglang>
+		</languages>
+	<plateforms>windows</plateforms>
+	<categories>
+    	<category>testing</category>	
+	</categories>
+	<keywords><![CDATA[cucuber,tutoriel,installation,windows]]></keywords>
+</meta>
+
+<content lang="fr-FR">
+	<title><![CDATA[Cucumber - Partie 4 Step Definition]]></title>
+	<step name="Introduction">
+		<substep>
+			<text>
+			<![CDATA[
+			Dans cette partie nous allons étudier quelques concepts avancés de cucumber. Nous étudierons cela à travers un exemple. A partir de là les limites de développement  et des tests ce chevaucheront.
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Nous allons travailler sur le scénario suivant, qui se trouve à /features/cash_withdrawal.feature:</br>
+				Feature: cash Withdrawal</br>
+					Scenario: Successful withdawal from an account in credit</br>
+						Given I have deposited $100 in an account</br>
+						When I request $20</br>
+						Then $20 should be dispensed</br>
+			]]>
+			</code>
+		</substep>
+	</step>
+	
+	<step name="Schématisons le domain model">
+		<substep>
+			<text>
+			<![CDATA[
+			Nous allons laisser cucumber piloter notre travail pour la création de classes domain model directement dans le scénario. On lance la commande cucumber et on place le code qu'in obtient dans un fichier ./features/step_definitions/steps.rb:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Given(/^I have deposited \$(\d+) in an account$/) do |arg1|</br>
+				  pending # express the regexp above with the code you wish you had</br>
+				end</br>
+
+				When(/^I request \$(\d+)$/) do |arg1|</br>
+				  pending # express the regexp above with the code you wish you had</br>
+				end</br>
+
+				Then(/^\$(\d+) should be dispensed$/) do |arg1|</br>
+				  pending # express the regexp above with the code you wish you had</br>
+				end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On relance la commande cucumber et il nous affiche:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Scenario: Successful withdawal from an account in credit # features\test.feature:2</br>
+				Given I have deposited $100 in an account              # features/step_definitions/test_steps.rb:1</br>
+				  TODO (Cucumber::Pending)</br>
+				  ./features/step_definitions/test_steps.rb:2:in `/^I have deposited \$(\d+) in an account$/'</br>
+				  features\test.feature:3:in `Given I have deposited $100 in an account'</br>
+				When I request $20                                     # features/step_definitions/test_steps.rb:5</br>
+				Then $20 should be dispensed                           # features/step_definitions/test_steps.rb:9</br>
+
+			1 scenario (1 pending)</br>
+			3 steps (2 skipped, 1 pending)</br>
+			0m0.031s</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On va mettre des expressions régulières pour chaque step definition:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Given /^I have deposited \$(\d+) in my account $/ do |amount|</br>
+				Account.new(amount.to_i)</br>
+			end</br>
+			When /^I request \$(\d+) $/ do |arg1|</br>
+				pending #express the regexp above with the code you wish you had</br>
+			end</br>
+			Then /^\$(\d+) should be dispensed$/ do |arg1|</br>
+				pending #express the regexp above with the code you wish you had</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		 
+		<substep>
+			<text>
+			<![CDATA[
+			Dans le premier step definition on fait appel a une classe imaginaire appelée Account. Ruby nous donne une erreur en nous indiquant qu'il faut créer la classe Account. Alors, c'est ce que nous allons faire:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			class Account</br>
+				def initialize(amount)</br>
+				end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On relance la commande cucumber, et le message suivant s'affiche:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature: Cash Withdrawal</br>
+				Scenario:Successful withdrawal from an account in credit</br>
+				Given I have deposited $100 in my account</br>
+				When I request $20</br>
+					TODO (Cucumber::Pending)</br>
+					./features/step_definitions/steps.rb:13</br>
+					features/cash_withdrawal.feature:4</br>
+				Then $20 should be dispensed</br>
+			1 scenario (1 pending)</br>
+			3 steps (1 skipped, 1 pending, 1 passed)</br>
+			0m0.002s</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Comme nous n'avons mis dans les conditions que si on a $100 alors qu'on a encore rien déposé. alors on fait deux changements:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Given /^I have deposited \$(\d+) in my account $/ do |amount|</br>
+				my_account = Account.new</br>
+				my_account.deposit(amount.to_i)</br>
+			end</br></br>
+			class Account</br>
+				def deposit(amount)</br>
+				end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On peut aussi vérifier si la somme que nous avons déposée correspond bien a la somme attendue:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Given /^I have deposited \$(\d+) in my account $/ do |amount|</br>
+				my_account = Account.new</br>
+				my_account.deposit(amount.to_i)</br>
+				my_account.balance.should eq(amount.to_i),</br>
+					"Expected the balance to be#{amount} but it was #{my_account.balance}"</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Pour rendre le step definition plus pertinent, on ajoute la méthode dans la classe Account:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			def	balance</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Cette fois ci le message suivant s'affiche quand on lance la commande cucumber:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature: Cash Withdrawal</br>
+				Scenario: Successful withdrawal from an account in credit</br>
+					Given I have deposited $100 in my account</br>
+					Expected the balance to be 100 but it was</br>
+					(RSpec::Expectations::ExpectationNotMetError)</br>
+					./features/step_definitions/steps.rb:15</br>
+					features/cash_withdrawal.feature:3</br>
+				When I request $20</br>
+				Then $20 should be dispensed</br>
+			Failing Scenarios:</br>
+			cucumber features/cash_withdrawal.feature:2</br>
+			1 scenario (1 failed)</br>
+			3 steps (1 failed, 2 skipped)</br>
+			0m0.002s</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Nous allons désormais faire passer le premier test en modifiant la class Account:
+			</br>]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			class Account</br>
+				def deposit(amount)</br>
+					@balance = amount</br>
+				end</br>
+				def balance</br>
+					@balance</br>
+				end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+	</step>
+	
+	
+	 
+	<step name="Suppression des doublons">
+		<substep>
+			<text>
+			<![CDATA[
+			Dans step.rb, on ajoute:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Transform /^\d+$/ do |number|</br>
+			  number.to_i</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Le Transform a pour le but de transformer le string en quelque chose qu'on utilise dans le code. Ici, on transforme un nombre en Fixnum integer de Ruby. Pour chaque step definition, cucumber va chercher les Transform qui correspondent à chaque argument et lui passe le string pour passer au step definition le résultat obtenu à partir de ce Tranform.</br>
+			]]>
+			</text>
+		</substep>		
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Mais cela crée une duplication en soit même avec la présence de \d+ dans step definition et le Transform. alors on crée une constante qu'on utilisera  dans le step definition:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			CAPTURE_A_NUMBER = Transform /^\d+$/ do |number|</br>
+			  number.to_i</br>
+			end</br>
+			</br>
+			Given /^I have deposited \$(#{CAPTURE_A_NUMBER}) in my account$/ do |amount|</br>
+			  my_account = Account.new</br>
+			  my_account.deposit(amount)</br>
+			  my_account.balance.should eq(amount),</br>
+				"Expected the balance to be #{amount} but it was #{my_account.balance}"</br>
+			end</br>
+			]]>
+			</code>
+		</substep>		
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On déplace maintenant le $ dans le bloc transform pour réunir l'ensemble de l'expression régulière:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			CAPTURE_CASH_AMOUNT = Transform /^\$(\d+)$/ do |digits|</br>
+			  digits.to_i</br>
+			end</br>
+			</br>
+			Given /^I have deposited (#{CAPTURE_CASH_AMOUNT}) in my account$/ do |amount|</br>
+			  my_account = Account.new</br>
+			  my_account.deposit(amount)</br>
+			  my_account.balance.should eq(amount),</br>
+				"Expected the balance to be #{amount} but it was #{my_account.balance}"</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+	</step>
+	
+	<step name="Ajout des méthodes ">
+		<substep>
+			<text>
+			<![CDATA[
+			Si on relance cucumber, il nous dit où on se trouve par:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature : Cash Withdrawal</br>
+				Scenario : Successful withdrawal from an account in credit</br>
+					Given I have deposited $100 in my account</br>
+					When I request $20</br>
+						TODO (Cucumber::Pending)</br>
+						./features/step_definitions/steps.rb:28</br>
+						features/cash_withdrawal.feature:4</br>
+					Then $20 should be dispensed</br>
+			1 scenario (1 pending)</br>
+			3 steps (1 skipped, 1 pending, 1 passed)</br>
+			0m0.002s</br>
+			]]>
+			</code>
+		</substep>
+
+		<substep>
+			<text>
+			<![CDATA[
+			Comme le premier step definition a passé, on s'occupe du deuxième:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			When /^I request \$(\d+)$/ do |arg1|</br>
+			  pending # express the regexp above with the code you wish you had</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On réutilise le bloc transform ici donc on obtient:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			When /^I request (#{CAPTURE_CASH_AMOUNT})$/ do |arg1|</br>
+			  pending # express the regexp above with the code you wish you had</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On introduit une autre classe teller, qui prendra en main la demande de retrait d'argent faite par Account:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|</br>
+			  teller = Teller.new</br>
+			  teller.withdraw_from(my_account, amount)</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Alors, on crée la class teller:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			class Teller</br>
+			  def withdraw_from(account, amount)</br>
+			  end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			et en même temps on change le feature aussi:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature: Cash Withdrawal</br>
+			  Scenario: Successful withdrawal from an account in credit</br>
+				Given I have deposited $100 in my account</br>
+				When I withdraw $20</br>
+				Then $20 should be dispensed</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On relance la commande cucumber:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature : Cash Withdrawal</br>
+				Scenario : Successful withdrawal from an account in credit</br>
+					Given I have deposited $100 in my account</br>
+					When I withdraw $20</br>
+						undefined local variable or method ‘my_account’ for</br>
+						#<Object:0x63756b65>(NameError)</br>
+						./features/step_definitions/steps.rb:32</br>
+						features/cash_withdrawal.feature:4</br>
+					Then $20 should be dispensed</br>
+			Failing Scenarios:</br>
+			cucumberfeatures/cash_withdrawal.feature:2</br>
+			1 scenario (1 failed)</br>
+			3 steps (1 failed, 1 skipped, 1 passed)</br>
+			0m0.003s</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Cucumber n'arrive pas a utiliser my_account dans le deuxième step definition car il est instancié dans le premier step definition. Donc on utilise ||, qui assure la création unique de Account. On l'utilise dans le module KnowsMyAccount:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			module KnowsMyAccount</br>
+			  def my_account</br>
+				@my_account ||= Account.new</br>
+			  end</br>
+			end</br>
+			</br>
+			World(KnowsMyAccount)</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			On peut ainsi supprimer l'initialisation de Account dans le premier step definition:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Given /^I have deposited (#{CAPTURE_CASH_AMOUNT}) in my account$/ do |amount|</br>
+			  my_account.deposit(amount)</br>
+			  my_account.balance.should eq(amount),</br>
+				"Expected the balance to be #{amount} but it was #{my_account.balance}"</br>
+			end</br>
+			</br>
+			When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|</br>
+			  teller = Teller.new</br>
+			  teller.withdraw_from(my_account, amount)</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			<b>Remarque</b> : World prend aussi en paramètre des classes:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			class MySpecialWorld</br>
+				def some_helper_method</br>
+					# …</br>
+				end</br>
+			end</br>
+			</br>
+			World { MySpecialWorld.new }</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Il reste le dernier step definition:</br>
+			]]>
+			</text>
+		</substep>
+		
+		<substep>
+			<code>
+			<![CDATA[
+			Then /^\$(\d+) should be dispensed$/ do |arg1|</br>
+			  pending # express the regexp above with the code you wish you had</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Il faut maintenant récupérerer le montant obtenu:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Then /^(#{CAPTURE_CASH_AMOUNT}) should be dispensed$/ do |amount|</br>
+			  cash_slot.contents.should == amount</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Ici on vient de déclarer une classe cash_slot, on l'ajoute dans steps.rb et on l'initialise dans KnowsTheDomain:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			module KnowsTheDomain</br>
+			  def my_account</br>
+				@my_account ||= Account.new</br>
+			  end</br>
+			  </br>
+			  def cash_slot</br>
+				@cash_slot ||= CashSlot.new</br>
+			  end</br>
+			end</br>
+			</br></br>
+			class CashSlot</br>
+			  def contents</br>
+				raise("I'm empty!")</br>
+			  end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Quand on lance la commande cucumber, on obtient:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			Feature : Cash Withdrawal</br>
+				Scenario : Successful withdrawal from an account in credit</br>
+				Given I have deposited $100 in my account</br>
+				When I withdraw $20</br>
+				Then $20 should be dispensed</br>
+					I’m empty! (RuntimeError)</br>
+					./features/step_definitions/steps.rb:19</br>
+					./features/step_definitions/steps.rb:55</br>
+					features/cash_withdrawal.feature:5</br>
+			Failing Scenarios:</br>
+			cucumberfeatures/cash_withdrawal.feature:2</br>
+			1 scenario ( 1 failed)</br>
+			3 steps ( 1 failed, 2 passed)</br>
+			0m0.004s</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			Le dernier step definition sera passé quand on demande a CashSlot de donner le montant voulu, on utilise Teller pour cela:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			class Teller</br>
+			  def initialize(cash_slot)</br>
+				@cash_slot = cash_slot</br>
+			  end</br>
+			  </br>
+			  def withdraw_from(account, amount)</br>
+				@cash_slot.dispense(amount)</br>
+			  end</br>
+			end</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			En faisant cela on peut faire passer tous les tests, mais il rest quelques changements à faire, appelle de teller dans le deuxième step definition en plus de cela la déclaration de teller dans KnowsTheDomain et la déclaration de la méthode dispense dans CashSlot:</br>
+			]]>
+			</text>
+		</substep>
+		<substep>
+			<code>
+			<![CDATA[
+			When /^I withdraw (#{CAPTURE_CASH_AMOUNT})$/ do |amount|</br>
+			  teller.withdraw_from(my_account, amount)</br>
+			end</br>
+			</br>
+			class CashSlot</br>
+			  def contents</br>
+				@contents or raise("I'm empty!")</br>
+			  end</br>
+			  </br>
+			  def dispense(amount)</br>
+				@contents = amount</br>
+			  end</br>
+			end</br>
+			</br>
+			module KnowsTheDomain</br>
+			  def my_account</br>
+				@my_account ||= Account.new</br>
+			  end</br>
+			  </br>
+			  def cash_slot</br>
+				@cash_slot ||= CashSlot.new</br>
+			  end
+			  </br>
+			  def teller</br>
+				@teller ||= Teller.new(cash_slot)</br>
+			  end</br>
+			end</br>
+			</br>
+			World(KnowsTheDomain)</br>
+			]]>
+			</code>
+		</substep>
+		
+		<substep>
+			<text>
+			<![CDATA[
+			En lançant la commande cucumber on aperçoit que tous les tests passent.</br>
+			]]>
+			</text>
+		</substep>
+		
+	</step>
+	
+</content>
+
+</tutorial>
