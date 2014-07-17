@@ -17,6 +17,9 @@
 <content lang="fr-FR">
     <title><![CDATA[Cucumber - Partie 2 Gherkin]]></title>
 	 <step name="Introduction">
+	 <substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 			<![CDATA[Maintenant que vous avez acquis une certaine confiance dans la façon dont fonctionne Cucember. </br>Nous allons regarder Gherkin, 
@@ -29,6 +32,9 @@
 		</substep>
 	</step>
 	<step name="2.1 Qu'est-ce Gherkin ?">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 			<![CDATA[
@@ -104,6 +110,9 @@
 		</substep>
 	</step>
 	<step name="2.2 Format et syntaxe">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -139,6 +148,9 @@
 		</substep>
 	</step>
 	<step name="2.3 Feature">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -154,6 +166,9 @@
 		</substep>
 	</step>
 	<step name="2.4 Scenario">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -233,6 +248,9 @@
 		</substep>
 	</step>
 	<step name="2.5 Commentaires">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 			<![CDATA[ 
@@ -244,6 +262,9 @@
 		</substep>
 	</step>
 	<step name="2.6 Qu'est-ce que nous venons d'apprendre">
+	<substep>
+		<img src="cucumber-logo.png" />
+	 </substep>
 		<substep>
 			<text>
 			<![CDATA[ 
