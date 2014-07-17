@@ -15,7 +15,7 @@
 	<keywords><![CDATA[cucuber,tutoriel,installation,windows]]></keywords>
 </meta>
 <content lang="fr-FR">
-    <title><![CDATA[Cucumber - Partie 3 Gherkin]]></title>
+    <title><![CDATA[Cucumber - Partie 2 Gherkin]]></title>
 	 <step name="Introduction">
 		<substep>
 			<text>
@@ -28,7 +28,7 @@
 			</text>
 		</substep>
 	</step>
-	<step name="3.1 Qu'est-ce Gherkin ?">
+	<step name="2.1 Qu'est-ce Gherkin ?">
 		<substep>
 			<text>
 			<![CDATA[
@@ -103,7 +103,7 @@
 			</code>
 		</substep>
 	</step>
-	<step name="3.2 Format et syntaxe">
+	<step name="2.2 Format et syntaxe">
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -138,7 +138,7 @@
 			</text>
 		</substep>
 	</step>
-	<step name="3.3 Feature">
+	<step name="2.3 Feature">
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -153,7 +153,7 @@
 			</text>
 		</substep>
 	</step>
-	<step name="3.4 Scenario">
+	<step name="2.4 Scenario">
 		<substep>
 			<text>
 				<![CDATA[ 
@@ -232,7 +232,7 @@
 			</text>
 		</substep>
 	</step>
-	<step name="3.5 Commentaires">
+	<step name="2.5 Commentaires">
 		<substep>
 			<text>
 			<![CDATA[ 
@@ -243,7 +243,7 @@
 			</text>
 		</substep>
 	</step>
-	<step name="3.6 Qu'est-ce que nous venons d'apprendre">
+	<step name="2.6 Qu'est-ce que nous venons d'apprendre">
 		<substep>
 			<text>
 			<![CDATA[ 
